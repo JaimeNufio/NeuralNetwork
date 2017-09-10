@@ -2,10 +2,11 @@ public class test{
 
 	public static void main(String[] g){
 	
-		double[] a = {1,2,3}, b = {3,4,5};
+		double[] a = {1,2,3}, b = {3,4,5,7,6,6,5,3};
 
-		System.out.println(smallDP(a,b));
+//		System.out.println(smallDP(a,b));
 
+		a = b;
 
 	}
 

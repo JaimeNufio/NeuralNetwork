@@ -1,6 +1,8 @@
 public class Perceptron{
 
-	
+
+	public double sumAttachedError = 0;
+
 	int[] outputSet;
 
 	double learningRate;
@@ -15,9 +17,9 @@ public class Perceptron{
 		this.setWeights();
 	}
 
-	Perceptron(int in, double learningRate){
+	Perceptron(int numWeights, double learningRate){
 		this.learningRate = learningRate;
-		this.weights = new double[in];
+		this.weights = new double[numWeights];
 //		System.out.println("Warning: no InputSet nor OutputSet initiated");
 		this.setWeights();
 	}
@@ -37,20 +39,19 @@ public class Perceptron{
 		}
 	}
 
-	void trainAll(){
-		if (this.inputSet == null || this.outputSet == null)
-			return;	
-		for (int i = 0; i<inputSet.length; i++){
-			this.train(inputSet[i],outputSet[i]);
-		}
-	}
-	
+
+
+
 	private void setWeights(){ //randomly assign values for weights
 		for (int i = 0; i<weights.length; i++){
 			weights[i] = Math.random();			
 		}
 	}
 
+
+	public void setWeights(double[] newWeights){ //for the NeuralNetwork to set weights in swaths 
+		this.weights = newWeights;
+	}
 
 	double[] getWeights(){
 		return weights;

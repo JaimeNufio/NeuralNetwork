@@ -10,7 +10,7 @@ public class Matrix{
 //		this.theArray = values; 
 //	}
 
-	Matrix(int[] values){ //ONLY FOR CREATING A MATRIX X-by-1 from array X
+	Matrix(double[] values){ //ONLY FOR CREATING A MATRIX X-by-1 from array X
 		this.theArray = new double[values.length][1];
 		for (int i = 0; i<values.length; i++){
 			this.theArray[i][0] = values[i];
@@ -183,6 +183,11 @@ public class Matrix{
 			}
 		}
 		this.theArray = newFlippy;
+	}
+
+	Matrix  getFlip(){
+		this.flip();
+		return this;
 	}
 
 	public double[][] toArray(){
