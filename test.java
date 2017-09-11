@@ -15,9 +15,10 @@ public class test{
 		Matrix y = new Matrix(tes);
 
 		y.flip();
-		System.out.print(t+"\n");
-		System.out.print(y+"\n");
-		System.out.print(y.dotProduct(t));
+		System.out.print(t+"Size x: "+t.toArray().length+"\n");
+		t.flip();
+		System.out.print(t+"Size x: "+t.toArray().length);
+	//	System.out.print(t.dotProduct(y));
 
 	}
 

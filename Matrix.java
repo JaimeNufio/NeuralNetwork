@@ -21,7 +21,7 @@ public class Matrix{
 		this.theArray = one;
 	}
 
-	void Scale(double value){
+	void scale(double value){
 		for (int i = 0; i < this.theArray.length; i++){
 			for (int j = 0; j < this.theArray[i].length; j++){
 				this.theArray[i][j]*=value;
@@ -129,38 +129,19 @@ public class Matrix{
 
 	}
 
-	Matrix dotProduct(Matrix two){
-		Matrix one = this;
-		double[][] newArray;
-		if((one.getColumn(0).length == two.getRow(0).length)||(one.getRow(0).length == two.getColumn(0).length)){
-			if (one.getRow(0).length == two.getColumn(0).length){
-				Matrix temp = two;
-				two = one;
-				one = temp;
-//				System.out.println("Flipped Matrix list");
-			}
-			
+	Matrix dotProduct(Matrix two){ //the host is alway the left Matrix
 		
-			if (this.lengthDouble(one.toArray()) < this.lengthDouble(two.toArray())){
-				newArray = one.toArray();
-			}else{
-				newArray = two.toArray();
-			}
+	       double[][] tempArray = new double[0][0];
 
-			double writeTo[][] = new double[newArray.length][newArray[0].length];
-
-			for (int i = 0; i < newArray.length; i++){
-				for (int j = 0; j < newArray[i].length; j++){ 
-					//i,j synonymous with row, and column
-					writeTo[i][j] = smallDP(one.getColumn(j),two.getRow(i));
-//					System.out.println("Dot Products: col: "+j+" and row: "+ i  );
+		if (this.getRow(0).length == two.getColumn(0).length){ //MUST BE TRUE
+			tempArray = new double[this.getColumn(0).length][two.getRow(0).length];
+			for (int i = 0; i < tempArray.length; i++){
+				for ( int j = 0; j < tempArray[0].length; j++){
+					tempArray[i][j] = smallDP(this.getRow(i),two.getColumn(j));//left row, right column
 				}
-			}	
-			newArray = writeTo;
-		}else{
-			newArray = new double[0][0];
+			}
 		}
-			return new Matrix(newArray);
+		return new Matrix(tempArray);
 	}
 
 	public String toString(){
