@@ -50,10 +50,10 @@ public class Matrix{
 
 	private double smallDP(double[] one, double[] two){ //requires both arrays to be of the same size.
 		double sum = 0;
-		System.out.println("Sum: "+sum);
+//		System.out.println("Sum: "+sum);
 		for (int i = 0; i < one.length; i++){
 			sum+=(one[i]*two[i]);
-			System.out.println(+one[i]+"*"+two[i]);
+//			System.out.println(+one[i]+"*"+two[i]);
 		}	
 		return sum;
 	}
@@ -153,7 +153,7 @@ public class Matrix{
 				for (int j = 0; j < newArray[i].length; j++){ 
 					//i,j synonymous with row, and column
 					writeTo[i][j] = smallDP(one.getColumn(j),two.getRow(i));
-					System.out.println("Dot Products: col: "+j+" and row: "+ i  );
+//					System.out.println("Dot Products: col: "+j+" and row: "+ i  );
 				}
 			}	
 			newArray = writeTo;
@@ -172,6 +172,16 @@ public class Matrix{
 			temp+="\n";
 		}
 		return temp;
+	}
+
+	public void totalWrite(double n){
+		double[][] tempArray = this.toArray();
+		for (int i = 0; i<tempArray.length; i++){
+			for (int j = 0; j < tempArray[0].length; j++){
+				tempArray[i][j] = n;
+			}
+		}
+		this.reassign(tempArray);
 	}
 
 	void flip(){ //flips [x][y] to [y][x]

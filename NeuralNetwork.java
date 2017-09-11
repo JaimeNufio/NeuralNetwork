@@ -10,11 +10,9 @@ public class NeuralNetwork{
 		this.learningRate = learningRate; //I guess we'll keeps tabs on the learning rate?	
 		this.inSet = new Perceptron[in];
 		this.initPerceptron(this.inSet,hidden);
-		this.outSet = new Perceptron[out];
-		this.initPerceptron(this.outSet,out);
 		this.hiddenSet = new Perceptron[hidden];
-		this.initPerceptron(this.hiddenSet,1);
-	
+		this.initPerceptron(this.hiddenSet,out);
+		
 	}
 
 	void initPerceptron(Perceptron[] layer, int numWeights){
@@ -22,6 +20,7 @@ public class NeuralNetwork{
 		for (int i = 0; i<layer.length; i++){
 			layer[i] = new Perceptron(numWeights,this.learningRate);
 		}
+
 	}
 	
 	Matrix guess(double[] inputs){
@@ -29,13 +28,85 @@ public class NeuralNetwork{
 		Matrix theMatrix = new Matrix(inputs); //Input
 		theMatrix = theMatrix.dotProduct(prepWeights(this.inSet));
 		theMatrix = theMatrix.dotProduct(prepWeights(this.hiddenSet));
-		theMatrix = theMatrix.dotProduct(prepWeights(this.outSet));
 
 		return theMatrix; //Neo, or something 
 
 	}
 
 	void train(double[] inputs, double[] expected){
+
+		Matrix outSet = guess(inputs); //after guessing
+		outSet.flip(); //get it all in a single array	
+
+		Matrix jkWeightsSet = prepWeights(hiddenSet);//these are the weights between the hidden layer, and the output		
+		jkWeightsSet.flip(); //flip for multiplication
+		
+		double[] outArray = outSet.toArray()[0]; //outs as in array, as oposed to a matrix
+		double[] errorAdjust = new double[inputs.length];
+		double[][] jkWeights = jkWeightsSet.toArray();	
+
+		for (int i = 0; i<errorAdjust.length; i++){
+			errorAdjust[i] = updateWeight(expected[i],outArray[i],jkWeights[i]);
+		}	
+
+		Matrix descent = new Matrix(errorAdjust);
+		outSet.flip(); 
+
+		Matrix adjustments = descent.dotProduct(outSet);		
+
+	}
+
+
+	private double totalWeight(double[] weights){
+		double sum = 0;
+		for (int i = 0; i < weights.length; i++){
+			sum+=weights[i];
+		}
+		return sum;
+	}
+
+	private double Sigmoid(double n){
+		return 1/(1+Math.exp(-1*n));
+	}
+
+	private Matrix prepWeights(Perceptron[] dataSet){ //Get a matrix of weights
+		double[][] weights = new double[dataSet.length][dataSet[0].getWeights().length];
+		for (int i = 0; i < dataSet.length; i++){
+			weights[i] = dataSet[i].getWeights();
+		}
+
+		return new Matrix(weights);
+	}
+
+	private double updateWeight(double target, double out, double[] relevantWeights){ //Gradient Descent intensifies. ...or rather, it doesn't.
+		double sum = totalWeight(relevantWeights);
+		return (target-out)*Sigmoid(sum*out)*(1-Sigmoid(sum*out))*out;
+	}
+
+	private double[][] flipArray(double[][] oldArray){
+
+		double[][] tempArray = oldArray;
+		for (int i = 0; i < tempArray.length; i++){
+			for (int k = 0; k < tempArray[0].length; k++){
+				tempArray[i][k] = oldArray[k][i];
+			}
+		}
+		return tempArray;
+	}
+
+	private double[][] adjustLayer(double[] weights, double error){
+		double[] tempArray = weights;
+		double[] tempError = tempArray;
+		double totalWeight = totalWeight(weights);
+		for(int i = 0 ; i<weights.length; i++){
+			tempError[i] = error*(weights[i]/totalWeight)*learningRate;
+			tempArray[i]+= tempError[i];
+		}
+		double[][] out =  {tempArray,tempError};
+		return out;
+	}
+
+	void oldTrain(double[] inputs, double[] expected){ //My forced method of back-prop
 		
 		Matrix inputSet = this.guess(inputs);
 		Matrix expectedSet = new Matrix(expected);
@@ -107,48 +178,6 @@ public class NeuralNetwork{
 		*/
 
 		//So.... Propogated up to Inputs.
-
-	}
-
-	private double[][] adjustLayer(double[] weights, double error){
-		double[] tempArray = weights;
-		double[] tempError = tempArray;
-		double totalWeight = totalWeight(weights);
-		for(int i = 0 ; i<weights.length; i++){
-			tempError[i] = error*(weights[i]/totalWeight)*learningRate;
-			tempArray[i]+= tempError[i];
-		}
-		double[][] out =  {tempArray,tempError};
-		return out;
-	}
-
-	private Matrix prepWeights(Perceptron[] dataSet){ //Get a matrix of weights
-		double[][] weights = new double[dataSet.length][dataSet[0].getWeights().length];
-		for (int i = 0; i < dataSet.length; i++){
-			weights[i] = dataSet[i].getWeights();
-		}
-
-		Matrix weightMatrix = new Matrix(weights);
-		return weightMatrix.getFlip();
-	}
-
-	private double totalWeight(double[] weights){
-		double sum = 0;
-		for (int i = 0; i < weights.length; i++){
-			sum+=weights[i];
-		}
-		return sum;
-	}
-
-	private double[][] flipArray(double[][] oldArray){
-
-		double[][] tempArray = oldArray;
-		for (int i = 0; i < tempArray.length; i++){
-			for (int k = 0; k < tempArray[0].length; k++){
-				tempArray[i][k] = oldArray[k][i];
-			}
-		}
-		return tempArray;
 
 	}
 }
