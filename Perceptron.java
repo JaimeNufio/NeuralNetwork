@@ -9,11 +9,12 @@ public class Perceptron{
 	double[] weights;
 	double[][] inputSet;
 
+	//don't use this constructor, I don't understand it
 	Perceptron(double[][] inputSet, int[] outputSet, double learningRate){
 		this.learningRate = learningRate;
 		this.inputSet = inputSet;
 		this.outputSet = outputSet;
-		this.weights = new double[inputSet[0].length];
+		this.weights = new double[inputSet[0].length]; //originally had inputSet[0]
 		this.setWeights();
 	}
 
@@ -38,9 +39,6 @@ public class Perceptron{
 			this.weights[i]+=input[i]*error*this.learningRate;
 		}
 	}
-
-
-
 
 	private void setWeights(){ //randomly assign values for weights
 		for (int i = 0; i<weights.length; i++){

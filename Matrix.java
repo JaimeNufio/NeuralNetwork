@@ -92,7 +92,6 @@ public class Matrix{
 			
 			for (int i = 0; i<B.theArray.length; i++){
 				for (int j = 0; j<B.theArray[i].length;j++){	
-					newArray[i][j]+=B.theArray[i][j];
 				}
 			}
 			newMatrix = new Matrix(newArray);
@@ -129,23 +128,41 @@ public class Matrix{
 
 	}
 
-	Matrix dotProduct(Matrix two){ //the host is alway the left Matrix
-		
-	       double[][] tempArray = new double[0][0];
-
-		if (this.getRow(0).length == two.getColumn(0).length){ //MUST BE TRUE
-			tempArray = new double[this.getColumn(0).length][two.getRow(0).length];
-			for (int i = 0; i < tempArray.length; i++){
-				for ( int j = 0; j < tempArray[0].length; j++){
-					tempArray[i][j] = smallDP(this.getRow(i),two.getColumn(j));//left row, right column
-				}
-			}
-		}
-		return new Matrix(tempArray);
+	public int getRows(){
+		return this.toArray().length;
 	}
 
+	public int getColumns(){
+		return this.toArray()[0].length;
+	}
+
+	Matrix dotProduct(Matrix one){ //the host is alway the right
+		double[][] temp = new double[0][0];
+		Matrix two = this;
+	
+		if (one.getColumns() == two.getRows()){
+			System.out.println("we good");
+			temp = new double[one.getRows()][two.getColumns()];
+			//System.out.printf("%d X %d\n",temp.length,temp[0].length);
+			System.out.printf("Row: %d Column: %d\n",temp.length,temp[0].length);
+			for(int i = 0; i<temp.length; i++){
+				for(int j = 0; j<temp[0].length; j++){
+					System.out.printf("(%d,%d)\n",i,j);
+					temp[i][j]+= smallDP(one.getRow(i),two.getColumn(j));	
+				}
+			}
+			System.out.println("did math");
+		}else{
+			System.out.printf("invalid maths (%d =/= %d)",one.getColumns(),two.getRows());
+		}
+
+		return new Matrix(temp);
+	}
+
+
+
 	public String toString(){
-		String temp = "";
+		String temp = this.theArray.length+" X "+this.theArray[0].length+"\n";
 		for (int i = 0; i < this.theArray.length; i++){
 			for (int j = 0; j < this.theArray[i].length; j++){
 				temp+=this.theArray[i][j]+" ";
@@ -177,8 +194,15 @@ public class Matrix{
 	}
 
 	Matrix  getFlip(){
-		this.flip();
-		return this;
+		double[][] flippy = this.toArray();
+		double[][] newFlippy = new double[flippy[0].length][flippy.length];
+		for(int i = 0; i < flippy.length; i++){
+			for(int j = 0; j<flippy[i].length; j++){
+				newFlippy[j][i] = flippy[i][j];
+			}
+		}
+		Matrix temp = new Matrix(newFlippy);
+		return temp;
 	}
 
 	public double[][] toArray(){

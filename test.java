@@ -1,34 +1,25 @@
 public class test{
 
 	public static void main(String[] g){
-	
-		//double[] a = {1,2,3}, b = {3,4,5,7,6,6,5,3};
+		NeuralNetwork nn = new NeuralNetwork(3,20,5,0.25);
 
-//		System.out.println(smallDP(a,b));
+		double[][] in = {{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,1}};
+		double[][] expected = {{0},{1},{2},{3},{4},{5},{6},{7}};
 
-		//a = b;
 
-		double[] te = {1,2,3};
-		Matrix t = new Matrix(te);
-	
-		double[] tes = {1,2,3};
-		Matrix y = new Matrix(tes);
+		double[][] a = {{1,2,3},{4,5,6}};
+	       	double[][] b  = {{1,4},{2,5},{3,6}};
 
-		y.flip();
-		System.out.print(t+"Size x: "+t.toArray().length+"\n");
-		t.flip();
-		System.out.print(t+"Size x: "+t.toArray().length);
-	//	System.out.print(t.dotProduct(y));
+		Matrix one = new Matrix(a);
+		Matrix two = new Matrix(b);
+
+		nn.guess(new double[]{1,5,6});
+		
+
+//		for (int i = 0; i<in.length; i++){
+//			nn.train(in[i],expected[i]);
+//		}
+  //      }
 
 	}
-
-        static double smallDP(double[] one, double[] two){ //requires both arrays to be of the same size.
-                double sum = 0;
-                for (int i = 0; i < one.length; i++){
-                        sum+=(one[i]*two[i]);
-                }
-                return sum;
-        }
-
-
 }
