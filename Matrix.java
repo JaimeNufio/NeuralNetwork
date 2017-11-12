@@ -141,25 +141,42 @@ public class Matrix{
 		Matrix two = this;
 	
 		if (one.getColumns() == two.getRows()){
-			System.out.println("we good");
+	////		System.out.println("we good");
 			temp = new double[one.getRows()][two.getColumns()];
 			//System.out.printf("%d X %d\n",temp.length,temp[0].length);
-			System.out.printf("Row: %d Column: %d\n",temp.length,temp[0].length);
+		//	System.out.printf("Row: %d Column: %d\n",temp.length,temp[0].length);
 			for(int i = 0; i<temp.length; i++){
 				for(int j = 0; j<temp[0].length; j++){
-					System.out.printf("(%d,%d)\n",i,j);
+		//			System.out.printf("(%d,%d)\n",i,j);
 					temp[i][j]+= smallDP(one.getRow(i),two.getColumn(j));	
 				}
 			}
-			System.out.println("did math");
+	//		System.out.println("did math");
 		}else{
-			System.out.printf("invalid maths (%d =/= %d)",one.getColumns(),two.getRows());
+	//		System.out.printf("invalid maths (%d =/= %d)",one.getColumns(),two.getRows());
 		}
 
 		return new Matrix(temp);
 	}
+	
+	//error is expected - resulted
+	Matrix massSub(Matrix sub){
+		
+		double[][] one = this.toArray(), two = sub.toArray(), temp = new double[0][0];
 
+		if (one.length == two.length && two[0].length == one[0].length){
+			System.out.println("Good");
+			temp = new double [one.length][one[0].length];
+			for (int i = 0; i<one.length;i++){
+				for(int j = 0; j<one[0].length;j++){
+					System.out.printf("%s - %s\n",one[i][j],two[i][j]);
+					temp[i][j] = one[i][j] - two[i][j];
+				}
+			}
+		}
 
+		return new Matrix(temp);
+	}
 
 	public String toString(){
 		String temp = this.theArray.length+" X "+this.theArray[0].length+"\n";

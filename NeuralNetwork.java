@@ -39,13 +39,13 @@ public class NeuralNetwork{
 	Matrix guess(double[] inputs){ //full guess
 	
 		Matrix theMatrix = new Matrix(inputs); //Input
-		System.out.print(theMatrix);
-		System.out.print(prepWeights(this.inSet));
+//		System.out.print(theMatrix);
+//		System.out.print(prepWeights(this.inSet));
 		theMatrix = theMatrix.dotProduct(prepWeights(this.inSet).getFlip());
-		System.out.println(theMatrix);
-		System.out.println(prepWeights(this.hiddenSet));
+//		System.out.println(theMatrix);
+//		System.out.println(prepWeights(this.hiddenSet));
 		theMatrix = theMatrix.dotProduct(prepWeights(this.hiddenSet).getFlip());
-		System.out.println(theMatrix);
+//		System.out.println(theMatrix);
 		//System.out.println(prepWeights(this.outSet));
 		//theMatrix = theMatrix.getFlip().dotProduct(prepWeights(this.outSet).getFlip());
 
@@ -71,6 +71,9 @@ public class NeuralNetwork{
 
 		for (int i = 0; i < dataSet.length; i++){
 			weights[i] = dataSet[i].getWeights();
+			for (int j = 0; j < weights[0].length;j++){
+				weights[i][j] = Sigmoid(weights[i][j]);
+			}
 		}
 
 		return new Matrix(weights);//.getFlip();
@@ -112,65 +115,29 @@ public class NeuralNetwork{
         }
 
 	void train(double[] inputs, double[] expected){
-
-		Matrix outSet = guess(inputs); //after guessing
-		outSet.flip(); //get it all in a 1D array	
-
-		Matrix jkWeightsSet = prepWeights(hiddenSet);//these are the weights between the hidden layer, and the output		
-		jkWeightsSet.flip(); //flip for multiplication
+		Matrix outSet = guess(inputs);
+		Matrix expectedSet = new Matrix (expected);
 		
-		double[] outArray = outSet.toArray()[0]; //outs as an array, as oposed to a matrix
-		double[] errorAdjust = new double[outArray.length]; //error adjust is the size of the outs, but flipped
-		double[][] jkWeights = jkWeightsSet.toArray();	//get all the weights layer jk, 
+		double[] set = new double[inputs.length];
 
-		for (int i = 0; i<errorAdjust.length; i++){
-			errorAdjust[i] = updateWeight(expected[i],outArray[i],jkWeights[i]);
-		}	
+		for (int i = 0; i < outSet.toArray().length; i++){
+		//	System.out.printf("%s - %s\n",expectedSet.toArray()[i][0],outSet.toArray()[i][0]);
+			set[i] = expectedSet.toArray()[i][0]-outSet.toArray()[i][0];
+		}
 
-		Matrix descent = new Matrix(errorAdjust); //Because we initialize as a 1D array its already stacked
+		Matrix errorSet = new Matrix(set);
+		Matrix hiddenWeights = prepWeights(this.hiddenSet);
+		Matrix Error = errorSet.dotProduct(hiddenWeights).getFlip();
 
-		Matrix adjustments = descent.dotProduct(outSet); //Should work?
-		adjustments.scale(learningRate); //we have the Matrix of delta w's, scale w/ learning rate 
+		double[][] weightCurrent = new double[hiddenSet[0].getWeights().length][];
+		double[][] weightAdjust = weightCurrent;
 
-		//Let's assume that outSet, and descent are lined up correctly for the math
-	
-		//adjustment.flip(); //get back to th weights format 
-		jkWeightsSet = jkWeightsSet.elementWiseSub(adjustments); //apply Math to weight
-		jkWeightsSet.flip();//get back to the weights formart for rewriting weights
-		
-		double[][] temp = jkWeightsSet.toArray();
-		
-		for (int i = 0; i < hiddenSet.length; i++){
-			hiddenSet[i].setWeights(temp[i]);;
+		for (int i = 0; i < weightCurrent.length; i++){
+			weightCurrent[i] = hiddenSet.getWeights();
 		}
 			
-		//First layer	
-		outSet = halfGuess(inputs);
-		outSet.flip();
-
-		Matrix ijWeightsSet = prepWeights(inSet);
-		ijWeightsSet.flip();
-
-		outArray = outSet.toArray()[0];
-		errorAdjust = new double[outArray.length];	
-		double[][] ijWeights = ijWeightsSet.toArray();
-
-		for (int i = 0; i<errorAdjust.length; i++){
-			errorAdjust[i] = updateWeight(expected[i],outArray[i],ijWeights[i]);
-		}
-
-		descent = new Matrix(errorAdjust);
-		adjustments = descent.dotProduct(outSet);
-
-		ijWeightsSet = ijWeightsSet.elementWiseSub(adjustments);
-		ijWeightsSet.flip();
-
-
-		temp = jkWeightsSet.toArray();
 		
-		for (int i = 0; i < hiddenSet.length; i++){
-			inSet[i].setWeights(temp[i]);
-		}
 	}
+
 
 }
