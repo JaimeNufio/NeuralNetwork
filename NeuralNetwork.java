@@ -103,6 +103,10 @@ public class NeuralNetwork{
 		return 1/(1+Math.exp(-1*n));
 	}
 
+	private double SigmoidDer(double n){ //n is the sum
+		return Sigmoid(double n)*(1-Sigmoid(n));
+	}
+
 	Matrix halfGuess(double[] inputs){
                 Matrix theMatrix = new Matrix(inputs);
                 theMatrix = theMatrix.dotProduct(prepWeights(this.inSet));
@@ -117,6 +121,8 @@ public class NeuralNetwork{
 	void train(double[] inputs, double[] expected){
 		Matrix outSet = guess(inputs);
 		Matrix expectedSet = new Matrix (expected);
+
+		double[][] outArray.toArray(), expectedArray = expectedSet.toArray();
 		
 		double[] set = new double[inputs.length];
 
@@ -127,14 +133,20 @@ public class NeuralNetwork{
 
 		Matrix errorSet = new Matrix(set);
 		Matrix hiddenWeights = prepWeights(this.hiddenSet);
+		System.out.println(hiddenWeights);
 		Matrix Error = errorSet.dotProduct(hiddenWeights).getFlip();
 
-		double[][] weightCurrent = new double[hiddenSet[0].getWeights().length][];
-		double[][] weightAdjust = weightCurrent;
+		double[][] weight = new double[hiddenSet.length][hiddenSet[0].getWeights().length];
+		
+
 
 		for (int i = 0; i < weightCurrent.length; i++){
-			weightCurrent[i] = hiddenSet.getWeights();
+			weight[i] = hiddenSet[i].getWeights();
+			for (int k = 0; k < weightCurrent.length; k++){
+				weight[i][j]-=updateWeight(
+			}
 		}
+
 			
 		
 	}

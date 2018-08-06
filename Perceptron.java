@@ -1,28 +1,22 @@
 public class Perceptron{
 
-
 	public double sumAttachedError = 0;
 
-	int[] outputSet;
+	double output;
 
 	double learningRate;
 	double[] weights;
-	double[][] inputSet;
-
-	//don't use this constructor, I don't understand it
-	Perceptron(double[][] inputSet, int[] outputSet, double learningRate){
-		this.learningRate = learningRate;
-		this.inputSet = inputSet;
-		this.outputSet = outputSet;
-		this.weights = new double[inputSet[0].length]; //originally had inputSet[0]
-		this.setWeights();
-	}
 
 	Perceptron(int numWeights, double learningRate){
 		this.learningRate = learningRate;
 		this.weights = new double[numWeights];
-//		System.out.println("Warning: no InputSet nor OutputSet initiated");
 		this.setWeights();
+	}
+
+	private void setWeights(){ //randomly assign values for weights
+		for (int i = 0; i<weights.length; i++){
+			weights[i] = Math.random();			
+		}
 	}
 
 	public double guess(double[] input){
@@ -40,13 +34,6 @@ public class Perceptron{
 		}
 	}
 
-	private void setWeights(){ //randomly assign values for weights
-		for (int i = 0; i<weights.length; i++){
-			weights[i] = Math.random();			
-		}
-	}
-
-
 	public void setWeights(double[] newWeights){ //for the NeuralNetwork to set weights in swaths 
 		this.weights = newWeights;
 	}
@@ -55,7 +42,6 @@ public class Perceptron{
 		return weights;
 	}
 
-
 	void printWeights(){
 		for (int i = 0; i < weights.length; i++){
 			System.out.println("Weight "+(i+1)+": "+weights[i]);
@@ -63,12 +49,7 @@ public class Perceptron{
 	}
 
 	private double sigmoid(double num){
-		double n = 0;
-	//	n = num > 0 ? 1 : 0;
-			
-		n = 1/(1+Math.exp(-1*num));
-	//	System.out.println("Sigmoid Got:"+n);
-		return n;
+		return (double) 1/(1+Math.exp(-1*num));
 	}
 
 }
