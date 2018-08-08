@@ -56,6 +56,10 @@ public class Perceptron{
 			System.out.println("Weight "+(i+1)+": "+weights[i]);
 		}
 	}
+	
+	void printBias(){
+		System.out.println("Bias: "+bias);	
+	}
 
 	private double sigmoid(double num){
 		return (double) 1/(1+Math.exp(-num));

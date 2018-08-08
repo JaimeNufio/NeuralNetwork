@@ -121,6 +121,13 @@ public class Matrix{
 
 	}
 
+	//For NeuralNetwork, init the Weights Matrix
+	public void writeToColumn(int column, double[] a){
+		for (int i = 0; i<a.length; i++){
+			theArray[i][column] = a[i];			
+		}
+	}	
+
 	//formerly, getRows()
 	public int getNumRows(){
 		return this.toArray().length;
