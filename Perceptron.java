@@ -2,8 +2,7 @@ public class Perceptron{
 
 	public double sumAttachedError = 0;
 
-	double output;
-
+	double bias = 0;
 	double learningRate;
 	double[] weights;
 
@@ -15,7 +14,7 @@ public class Perceptron{
 
 	private void setWeights(){ //randomly assign values for weights
 		for (int i = 0; i<weights.length; i++){
-			weights[i] = Math.random();			
+			weights[i] =0;// Math.random();			
 		}
 	}
 
@@ -24,14 +23,24 @@ public class Perceptron{
 		for (int i = 0; i < weights.length; i++){
 			output+=this.weights[i]*input[i];
 		}
-		return sigmoid(output);
+		return sigmoid(output+bias);
 	}	
 
 	void train(double[] input, int expected){
 		double error = expected-guess(input);
+		
+		/*
+		System.out.println("Got: "+guess(input));
+		System.out.println("Expected: "+expected);
+		System.out.println("Error: "+error);
+		*/
+
 		for (int i = 0; i < weights.length; i++){
-			this.weights[i]+=input[i]*error*this.learningRate;
+			this.weights[i]+=error*input[i]*learningRate;
+		//	System.out.println("Weight Delta: "+((error/(input[i]+.1))*learningRate));
 		}
+		bias+=error*learningRate;
+		//  System.out.println("Bias Delta: "+((error/(1))*learningRate));
 	}
 
 	public void setWeights(double[] newWeights){ //for the NeuralNetwork to set weights in swaths 
@@ -49,7 +58,7 @@ public class Perceptron{
 	}
 
 	private double sigmoid(double num){
-		return (double) 1/(1+Math.exp(-1*num));
+		return (double) 1/(1+Math.exp(-num));
 	}
 
 }

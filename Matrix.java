@@ -6,9 +6,9 @@ public class Matrix{
 	//Notes:
 	//Rows are defined by the 2nd Dimension
 
-//	Matrix(double[][] values){	//Depricated, I suppose
-//		this.theArray = values; 
-//	}
+	//MATRIX: MxN
+	//N - i
+	//M - j
 
 	Matrix(double[] values){ //ONLY FOR CREATING A MATRIX X-by-1 from array X
 		this.theArray = new double[values.length][1];
@@ -33,8 +33,6 @@ public class Matrix{
 		this.theArray = val;
 	}
 
-	//Index starts at 0.
-
 	double[] getColumn(int n){
 		double[] tempArray = new double[this.theArray.length];
 		for (int i = 0; i < this.theArray.length; i++){
@@ -58,43 +56,39 @@ public class Matrix{
 		return sum;
 	}
 
-	private int lengthDouble(double[][] a){
+	private int length(){
 		int cnt = 0;
-		for (int i = 0; i < a.length; i++){
-			for (int j = 0; j<a[i].length; j++){
+		for (int i = 0; i < theArray.length; i++){
+			for (int j = 0; j<theArray[i].length; j++){
 			cnt++;
 			}
 		}
 		return cnt;
 	}
 
-	private String printArray(double[] a){
+	void printArray(double[] a){
 		String temp = "";
 		for (int i = 0; i <a.length; i++){
 			temp+=a[i]+" ";
 		}
-		return temp;
+		System.out.println(temp);
 	}
 	
-	//TODO 
-	//Element Wise Addition
-	//Element Wise Multiplication
-	
-
 	Matrix elementWiseAdd(Matrix B){
 	
 		double[][] newArray;	
 
 		newArray = this.toArray();
-		Matrix newMatrix = new Matrix(newArray);
+		Matrix newMatrix;
 
-		if (this.lengthDouble(this.theArray)==this.lengthDouble(B.theArray)){
+		if (this.length()==B.length() && this.theArray[0].length == B.theArray[0].length){
 			
 			for (int i = 0; i<B.theArray.length; i++){
 				for (int j = 0; j<B.theArray[i].length;j++){	
+					newArray[i][j]+=B.theArray[i][j];
 				}
 			}
-			newMatrix = new Matrix(newArray);
+			newMatrix  = new Matrix(newArray);
 
 		}else{
 			return null;
@@ -109,9 +103,9 @@ public class Matrix{
 		double[][] newArray;	
 
 		newArray = this.toArray();
-		Matrix newMatrix = new Matrix(newArray);
+		Matrix newMatrix;
 
-		if (this.lengthDouble(this.theArray)==this.lengthDouble(B.theArray)){
+		if (this.length()==B.length() && this.theArray[0].length == B.theArray[0].length){
 			
 			for (int i = 0; i<B.theArray.length; i++){
 				for (int j = 0; j<B.theArray[i].length;j++){	
@@ -119,7 +113,6 @@ public class Matrix{
 				}
 			}
 			newMatrix = new Matrix(newArray);
-
 		}else{
 			return null;
 		}
@@ -128,21 +121,24 @@ public class Matrix{
 
 	}
 
-	public int getRows(){
+	//formerly, getRows()
+	public int getNumRows(){
 		return this.toArray().length;
 	}
 
-	public int getColumns(){
+	//formerly, getColumns()
+	public int getNumColumns(){
 		return this.toArray()[0].length;
 	}
 
 	Matrix dotProduct(Matrix one){ //the host is alway the right
-		double[][] temp = new double[0][0];
+
 		Matrix two = this;
+		double[][] temp = new double[one.getNumColumns()][two.getNumRows()];
 	
-		if (one.getColumns() == two.getRows()){
+		if (one.getNumColumns() == two.getNumRows()){
 	////		System.out.println("we good");
-			temp = new double[one.getRows()][two.getColumns()];
+			temp = new double[one.getNumRows()][two.getNumColumns()];
 			//System.out.printf("%d X %d\n",temp.length,temp[0].length);
 		//	System.out.printf("Row: %d Column: %d\n",temp.length,temp[0].length);
 			for(int i = 0; i<temp.length; i++){
@@ -153,9 +149,8 @@ public class Matrix{
 			}
 	//		System.out.println("did math");
 		}else{
-	//		System.out.printf("invalid maths (%d =/= %d)",one.getColumns(),two.getRows());
+			System.out.printf("invalid maths (%d =/= %d)",one.getNumColumns(),two.getNumRows());
 		}
-
 		return new Matrix(temp);
 	}
 	
@@ -174,7 +169,6 @@ public class Matrix{
 				}
 			}
 		}
-
 		return new Matrix(temp);
 	}
 
@@ -231,3 +225,5 @@ public class Matrix{
 	}
 
 }
+
+
