@@ -179,7 +179,7 @@ public class Matrix{
 		return new Matrix(temp);
 	}
 
-	public String toString(){
+	public String oString(){
 		String temp = this.theArray.length+" X "+this.theArray[0].length+"\n";
 		for (int i = 0; i < this.theArray.length; i++){
 			for (int j = 0; j < this.theArray[i].length; j++){
@@ -221,6 +221,14 @@ public class Matrix{
 		}
 		Matrix temp = new Matrix(newFlippy);
 		return temp;
+	}
+
+	void sigmoid(){
+		for (int i = 0; i<theArray.length;i++){
+			for (int j = 0; j<theArray[0].length;j++){
+				theArray[i][j] = (double) 1/(1+Math.exp(-theArray[i][j]));
+			}
+		}
 	}
 
 	public double[][] toArray(){

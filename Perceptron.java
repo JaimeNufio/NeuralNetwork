@@ -14,7 +14,7 @@ public class Perceptron{
 
 	private void setWeights(){ //randomly assign values for weights
 		for (int i = 0; i<weights.length; i++){
-			weights[i] =0;// Math.random();			
+			weights[i] =0.2;// Math.random();			
 		}
 	}
 
