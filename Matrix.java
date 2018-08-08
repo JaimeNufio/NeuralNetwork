@@ -162,24 +162,21 @@ public class Matrix{
 	}
 	
 	//error is expected - resulted
-	Matrix massSub(Matrix sub){
-		
+	void matrixSub(Matrix sub){
 		double[][] one = this.toArray(), two = sub.toArray(), temp = new double[0][0];
-
 		if (one.length == two.length && two[0].length == one[0].length){
-			System.out.println("Good");
 			temp = new double [one.length][one[0].length];
 			for (int i = 0; i<one.length;i++){
 				for(int j = 0; j<one[0].length;j++){
-					System.out.printf("%s - %s\n",one[i][j],two[i][j]);
+		//			System.out.printf("%s - %s\n",one[i][j],two[i][j]);
 					temp[i][j] = one[i][j] - two[i][j];
 				}
 			}
+			theArray = temp;
 		}
-		return new Matrix(temp);
 	}
 
-	public String oString(){
+	public String toString(){
 		String temp = this.theArray.length+" X "+this.theArray[0].length+"\n";
 		for (int i = 0; i < this.theArray.length; i++){
 			for (int j = 0; j < this.theArray[i].length; j++){

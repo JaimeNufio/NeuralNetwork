@@ -7,8 +7,12 @@ public class experiment{
 		//1 if y > x	
 		
 		double[] input = new double[999];
-		NeuralNetwork n = new NeuralNetwork(999,100,10,.7);
-		n.guess(input);
+		double[] errorT = {1,2,3,4,5,6,7};
+		double[] targetT= {1,2,3};
+
+		NeuralNetwork n = new NeuralNetwork(7,5,3,.7);
+		n.guess(errorT);
+		System.out.println(n.train(errorT,targetT));
 
 
 	}

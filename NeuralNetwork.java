@@ -51,11 +51,20 @@ public class NeuralNetwork{
 //			System.out.println(hiddenWeights);
 			Matrix output = toHidden.dotProduct(hiddenWeights);	
 			output.sigmoid();
-			System.out.println(output);
+		//	System.out.println(output);
 			return output;
 		}
 		System.out.println("Bad data set.");
 		return null;
+	}
+
+	Matrix train(double[] ins, double[] wants){
+		Matrix error = new Matrix(wants);
+		//System.out.println("Wants:\n"+error);
+		Matrix curr = guess(ins);
+		//System.out.println("Guess:\n"+curr);
+		error.matrixSub(curr);
+		return error;
 	}
 
 }
