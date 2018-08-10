@@ -2,7 +2,8 @@ public class NeuralNetwork{
 	
 	Perceptron[] inSet, hiddenSet;
 	int out;
-	double learningRate;
+	double learningRate, biasToHidden=1, biasToOutput=1;
+
 	//Feed Forward Process
 	//-Weighted Sums
 
@@ -31,7 +32,6 @@ public class NeuralNetwork{
 	Matrix guess(double[] inputSet){
 		if (inputSet.length == inSet.length){		//inputSet is a column of values,in Set is the number of Nodes in the first layer
 			Matrix in = new Matrix(inputSet);		//Use single array, column constructor		
-//			System.out.println(in);
 			double[][] skeleton = new double[hiddenSet.length][inputSet.length];	//creatue matrix that is X: inputs/first layer Nodes Y: Hidden Layer Nodes
 			Matrix inWeights = new Matrix(skeleton);
 			for (int i = 0; i<inSet.length; i++){
@@ -39,6 +39,8 @@ public class NeuralNetwork{
 			}
 //			System.out.println(inWeights);
 			Matrix toHidden = in.dotProduct(inWeights);
+//			System.out.println(toHidden);
+			toHidden.addAll(biasToHidden);
 //			System.out.println(toHidden);
 			toHidden.sigmoid();	
 //			System.out.println(toHidden);
@@ -48,23 +50,23 @@ public class NeuralNetwork{
 			for (int i = 0; i<hiddenSet.length; i++){
 				hiddenWeights.writeToColumn(i,hiddenSet[i].getWeights()); //fill with weights, they are read top-bottom per node
 			}
+//			System.out.println("hiddenWeights:");
 //			System.out.println(hiddenWeights);
 			Matrix output = toHidden.dotProduct(hiddenWeights);	
 			output.sigmoid();
-		//	System.out.println(output);
+//			System.out.println(output);
+			output.addAll(biasToOutput);
+//			System.out.println(output);
 			return output;
 		}
 		System.out.println("Bad data set.");
 		return null;
 	}
 
-	Matrix train(double[] ins, double[] wants){
-		Matrix error = new Matrix(wants);
-		//System.out.println("Wants:\n"+error);
-		Matrix curr = guess(ins);
-		//System.out.println("Guess:\n"+curr);
-		error.matrixSub(curr);
-		return error;
+	void train(double[] inputSet, double[] expected){
+		Matrix guess = guess(inputSet);
+		Matrix error = new Matrix(expected);
+
 	}
 
 }

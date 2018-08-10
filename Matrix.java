@@ -98,29 +98,6 @@ public class Matrix{
 
 	}
 
-	Matrix elementWiseSub(Matrix B){	//Subtract B from A, New = A-B
-	
-		double[][] newArray;	
-
-		newArray = this.toArray();
-		Matrix newMatrix;
-
-		if (this.length()==B.length() && this.theArray[0].length == B.theArray[0].length){
-			
-			for (int i = 0; i<B.theArray.length; i++){
-				for (int j = 0; j<B.theArray[i].length;j++){	
-					newArray[i][j]-=B.theArray[i][j];
-				}
-			}
-			newMatrix = new Matrix(newArray);
-		}else{
-			return null;
-		}
-
-		return newMatrix;
-
-	}
-
 	//For NeuralNetwork, init the Weights Matrix
 	public void writeToColumn(int column, double[] a){
 		for (int i = 0; i<a.length; i++){
@@ -173,6 +150,14 @@ public class Matrix{
 				}
 			}
 			theArray = temp;
+		}
+	}
+
+	void addAll(double element){
+		for (int i = 0; i<toArray().length; i++){
+			for (int j = 0; j<toArray()[0].length; j++){
+				theArray[i][j]+=element;	
+			}
 		}
 	}
 
